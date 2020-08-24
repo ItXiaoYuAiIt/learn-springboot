@@ -1,0 +1,26 @@
+# tomcat端口号
+server:
+  port: 8081
+
+
+# 自定义单个属性
+num: 1
+value: ${num}
+# 自定义多个属性
+learn:
+  subject: springboot
+  time: 2h
+  grade: primer
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springboot?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+    username: root
+    password: 111111
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+

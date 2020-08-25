@@ -1,10 +1,15 @@
 package com.itxiaoyuaiit.learnspringboot.controller;
 
 import com.itxiaoyuaiit.learnspringboot.dao.UserDao;
+import com.itxiaoyuaiit.learnspringboot.model.Result;
 import com.itxiaoyuaiit.learnspringboot.model.User;
+import com.itxiaoyuaiit.learnspringboot.service.UserService;
+import com.itxiaoyuaiit.learnspringboot.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -22,16 +27,22 @@ public class RestFulApiController {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * C
      * @return result
      */
     @PostMapping("/user")
-    public Map<String, Object> create(@RequestBody User user){
-        Map<String, Object> result = new HashMap<>();
-        user = userDao.save(user);
-        result.put("msg", user);
-        return result;
+    public Result<User> create(@RequestBody @Valid User user, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return ResultUtil.error(100, bindingResult.getFieldError().getDefaultMessage());
+        }else {
+            user = userDao.save(user);
+            return ResultUtil.success(user);
+
+        }
     }
 
     /**
@@ -39,10 +50,8 @@ public class RestFulApiController {
      * @return result
      */
     @GetMapping("/user/{id}")
-    public Map<String, Object> reader(@PathVariable("id") Integer id){
-        User user = userDao.findById(id).get();
-        Map<String, Object> result = new HashMap<>();
-        result.put("msg", user);
+    public Result<User> reader(@PathVariable("id") Integer id){
+        Result result = userService.getUser(id);
         return result;
     }
 

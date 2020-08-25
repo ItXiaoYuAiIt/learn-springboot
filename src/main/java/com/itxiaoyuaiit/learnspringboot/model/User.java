@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -20,8 +23,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)    //设置主键自增，不然hibernate会默认使用序列自增
     private Integer id;
 
+    @NotBlank(message = "姓名不能为空")
     private String name;
 
+    @Min(value = 18,message = "年龄必须大于18")
     private Integer age;
 
     private String job;
